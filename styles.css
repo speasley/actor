@@ -498,6 +498,33 @@ a { color: inherit; }
   margin-top: 0.25rem;
   cursor: pointer;
 }
+.contact-form button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.contact-form__success {
+  margin-top: 2.5rem;
+  padding: 2rem 1.75rem;
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--accent);
+  background: var(--bg-panel);
+  border-radius: 2px;
+}
+.contact-form__success[hidden] { display: none; }
+.contact-form__success:focus { outline: none; }
+.contact-form__success h3 {
+  font-family: var(--serif);
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin: 0 0 0.4rem;
+}
+.contact-form__success p {
+  font-family: var(--sans);
+  font-size: 0.95rem;
+  color: var(--muted);
+  margin: 0;
+}
 
 /* ===========================================================================
    FOOTER

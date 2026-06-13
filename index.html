@@ -242,9 +242,8 @@
           </div>
         </dl>
 
-        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form">
+        <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="contact-form" id="contact-form">
           <input type="hidden" name="form-name" value="contact" />
-          <input type="hidden" name="subject" />
           <p class="contact-form__honeypot">
             <label>Don't fill this out if you're human: <input name="bot-field" /></label>
           </p>
@@ -272,6 +271,11 @@
           <button type="submit" class="btn btn--solid">Send message</button>
         </form>
 
+        <div class="contact-form__success" id="contact-success" role="status" tabindex="-1" hidden>
+          <h3>Thanks — message sent.</h3>
+          <p>I'll get back to you as soon as I can.</p>
+        </div>
+
       </div>
     </section>
 
@@ -286,6 +290,37 @@
   <script>
     (function () {
       document.getElementById("footer-year").textContent = new Date().getFullYear();
+    })();
+
+    /* Submit the contact form via fetch so the visitor stays on the page.
+       Netlify still receives the POST; we just swap the form for a thank-you.
+       If JS is unavailable or the request fails, the form posts normally. */
+    (function () {
+      var form = document.getElementById("contact-form");
+      if (!form) return;
+      var success = document.getElementById("contact-success");
+      var button = form.querySelector('button[type="submit"]');
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        if (button) { button.disabled = true; button.textContent = "Sending…"; }
+
+        fetch("/", {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: new URLSearchParams(new FormData(form)).toString()
+        })
+          .then(function (res) {
+            if (!res.ok) throw new Error("Submission failed");
+            form.hidden = true;
+            success.hidden = false;
+            success.focus();
+          })
+          .catch(function () {
+            if (button) { button.disabled = false; button.textContent = "Send message"; }
+            form.submit(); /* fall back to Netlify's standard POST */
+          });
+      });
     })();
   </script>
 </body>
