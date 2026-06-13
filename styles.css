@@ -224,6 +224,7 @@ a { color: inherit; }
   border-radius: 2px;
   text-decoration: none;
   border: 1px solid var(--ink);
+  min-height: 44px; /* comfortable touch target */
   transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
 }
 .btn--sm { padding: 0.6rem 1rem; font-size: 0.78rem; }
@@ -341,8 +342,8 @@ a { color: inherit; }
   border: 0;
 }
 .resume__fallback {
+  display: none; /* desktop shows the embedded iframe; mobile swaps to this */
   min-height: 360px;
-  display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -428,6 +429,7 @@ a { color: inherit; }
 .contact dd {
   margin: 0;
   font-size: 1.1rem;
+  overflow-wrap: anywhere; /* long URLs wrap instead of forcing horizontal scroll */
 }
 .contact a {
   color: var(--ink);
@@ -570,11 +572,25 @@ a { color: inherit; }
 
   .topbar__nav { gap: 0.95rem; }
   .contact__row { grid-template-columns: 1fr; gap: 0.2rem; }
+
+  /* Let long role text wrap instead of forcing the row wider than the screen */
+  .credit__role { white-space: normal; }
+
+  /* Embedded PDF viewers are unreliable on mobile — show a tap-through panel */
+  .resume__pdf { display: none; }
+  .resume__fallback { display: flex; }
 }
 
 @media (max-width: 460px) {
-  .topbar__nav a:nth-child(1),
-  .topbar__nav a:nth-child(3) { display: none; } /* trim nav on tiny screens */
+  /* Keep all four nav links; drop the redundant name to make room */
+  .topbar__name { display: none; }
+  .topbar__inner { justify-content: center; }
+  .topbar__nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.1rem;
+  }
+
   .credit {
     grid-template-columns: 1fr;
     grid-template-areas: "title" "company" "role";
