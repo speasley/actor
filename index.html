@@ -68,9 +68,20 @@
       </div>
 
       <figure class="hero__photo reveal">
-        <img src="assets/headshot-placeholder.svg" alt="Headshot of Stephen Peasley" />
+        <div class="hero__photo-stack">
+          <img class="hero__photo-img is-active" id="headshot-commercial"
+               src="assets/StephenPeasley-Headshot--Commercial-web.webp"
+               alt="Stephen Peasley — commercial headshot" />
+          <img class="hero__photo-img" id="headshot-theatrical"
+               src="assets/StephenPeasley-Headshot--Theatrical-web.webp"
+               alt="Stephen Peasley — theatrical headshot" loading="lazy" />
+        </div>
         <figcaption class="hero__photo-caption">
-          <a href="assets/headshot-placeholder.svg" download="Stephen-Peasley-Headshot">
+          <div class="hero__photo-toggle" role="group" aria-label="Choose headshot">
+            <button type="button" class="hero__photo-toggle-btn is-active" data-look="commercial" aria-pressed="true">Commercial</button>
+            <button type="button" class="hero__photo-toggle-btn" data-look="theatrical" aria-pressed="false">Theatrical</button>
+          </div>
+          <a id="headshot-download" href="assets/StephenPeasley-Headshot--Commercial.jpg" download="Stephen-Peasley-Headshot">
             <svg class="dl-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -290,6 +301,37 @@
   <script>
     (function () {
       document.getElementById("footer-year").textContent = new Date().getFullYear();
+    })();
+
+    /* Headshot toggle — crossfade between the commercial and theatrical looks */
+    (function () {
+      var toggle = document.querySelector(".hero__photo-toggle");
+      if (!toggle) return;
+      var buttons = toggle.querySelectorAll(".hero__photo-toggle-btn");
+      var images = {
+        commercial: document.getElementById("headshot-commercial"),
+        theatrical: document.getElementById("headshot-theatrical")
+      };
+      var downloads = {
+        commercial: "assets/StephenPeasley-Headshot--Commercial.jpg",
+        theatrical: "assets/StephenPeasley-Headshot--Theatrical.jpg"
+      };
+      var dl = document.getElementById("headshot-download");
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var look = btn.dataset.look;
+          buttons.forEach(function (b) {
+            var on = b === btn;
+            b.classList.toggle("is-active", on);
+            b.setAttribute("aria-pressed", on ? "true" : "false");
+          });
+          Object.keys(images).forEach(function (key) {
+            if (images[key]) images[key].classList.toggle("is-active", key === look);
+          });
+          if (dl && downloads[look]) dl.setAttribute("href", downloads[look]);
+        });
+      });
     })();
 
     /* Submit the contact form via fetch so the visitor stays on the page.
