@@ -81,7 +81,7 @@
             <button type="button" class="hero__photo-toggle-btn is-active" data-look="commercial" aria-pressed="true">Commercial</button>
             <button type="button" class="hero__photo-toggle-btn" data-look="theatrical" aria-pressed="false">Theatrical</button>
           </div>
-          <a id="headshot-download" href="assets/StephenPeasley-Headshot--Commercial.jpg" download="Stephen-Peasley-Headshot">
+          <a id="headshot-download" href="assets/StephenPeasley-Headshot--Commercial.jpg" download="Stephen-Peasley-Commercial-Headshot.jpg">
             <svg class="dl-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <path d="M8 1v9m0 0L4.5 6.5M8 10l3.5-3.5M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -313,8 +313,8 @@
         theatrical: document.getElementById("headshot-theatrical")
       };
       var downloads = {
-        commercial: "assets/StephenPeasley-Headshot--Commercial.jpg",
-        theatrical: "assets/StephenPeasley-Headshot--Theatrical.jpg"
+        commercial: { href: "assets/StephenPeasley-Headshot--Commercial.jpg", name: "Stephen-Peasley-Commercial-Headshot.jpg" },
+        theatrical: { href: "assets/StephenPeasley-Headshot--Theatrical.jpg", name: "Stephen-Peasley-Theatrical-Headshot.jpg" }
       };
       var dl = document.getElementById("headshot-download");
 
@@ -329,7 +329,10 @@
           Object.keys(images).forEach(function (key) {
             if (images[key]) images[key].classList.toggle("is-active", key === look);
           });
-          if (dl && downloads[look]) dl.setAttribute("href", downloads[look]);
+          if (dl && downloads[look]) {
+            dl.setAttribute("href", downloads[look].href);
+            dl.setAttribute("download", downloads[look].name);
+          }
         });
       });
     })();
