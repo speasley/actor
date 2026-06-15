@@ -499,6 +499,9 @@ a { color: inherit; }
   display: grid;
   gap: 1.25rem;
 }
+/* `display: grid` above overrides the UA [hidden] rule, so hiding the form
+   on submit needs this more-specific selector to actually take effect. */
+.contact-form[hidden] { display: none; }
 .contact-form__row {
   display: grid;
   gap: 0.45rem;
