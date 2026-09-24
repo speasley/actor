@@ -170,7 +170,7 @@ a { color: inherit; }
 /* Two headshots stacked in the same spot; the toggle crossfades between them */
 .hero__photo-stack {
   position: relative;
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3243 / 4868; /* matches the headshot source files (~2:3) */
   border: 1px solid var(--line);
   border-radius: 2px;
   overflow: hidden;
