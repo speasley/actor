@@ -204,11 +204,14 @@
           <p class="resume__note">Full credits, training, and special skills.</p>
           <a class="btn btn--ghost btn--sm" href="Stephen-Peasley-Resume.pdf" download><svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M4 20h16"/></svg>Download PDF</a>
         </div>
-        <div class="resume__frame">
-          <iframe class="resume__pdf" src="Stephen-Peasley-Resume.pdf#view=FitH" title="Résumé PDF" loading="lazy"></iframe>
+        <div class="resume__frame" id="resume-frame">
+          <!-- src is set on click: Chromium's PDF viewer grabs focus on load,
+               which would scroll the page down to the résumé on arrival -->
+          <iframe class="resume__pdf" data-src="Stephen-Peasley-Resume.pdf#view=FitH" title="Résumé PDF"></iframe>
           <div class="resume__fallback">
             <p>View the full résumé as a PDF.</p>
-            <a class="btn btn--solid" href="Stephen-Peasley-Resume.pdf" target="_blank" rel="noopener"><svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Open résumé</a>
+            <button type="button" class="btn btn--solid resume__load" id="resume-load"><svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>View résumé</button>
+            <a class="btn btn--solid resume__open" href="Stephen-Peasley-Resume.pdf" target="_blank" rel="noopener"><svg class="btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 4h6v6"/><path d="M20 4 11 13"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>Open résumé</a>
           </div>
         </div>
         <p class="resume__hint">Can't see it? <a href="Stephen-Peasley-Resume.pdf" download>Download the résumé PDF</a>.</p>
@@ -327,6 +330,19 @@
             dl.setAttribute("download", downloads[look].name);
           }
         });
+      });
+    })();
+
+    /* Résumé — load the embedded PDF only when asked for */
+    (function () {
+      var frame = document.getElementById("resume-frame");
+      var load = document.getElementById("resume-load");
+      if (!frame || !load) return;
+      var pdf = frame.querySelector(".resume__pdf");
+
+      load.addEventListener("click", function () {
+        pdf.src = pdf.dataset.src;
+        frame.classList.add("is-loaded");
       });
     })();
 

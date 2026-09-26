@@ -358,8 +358,14 @@ a { color: inherit; }
   min-height: 520px;
   border: 0;
 }
+/* The PDF stays unloaded until "View résumé" is clicked, then replaces the panel */
+.resume__frame:not(.is-loaded) .resume__pdf { display: none; }
+.resume__frame.is-loaded .resume__fallback { display: none; }
+.resume__load { display: none; }
+.js .resume__load { display: inline-flex; }
+.js .resume__open { display: none; }
 .resume__fallback {
-  display: none; /* desktop shows the embedded iframe; mobile swaps to this */
+  display: flex;
   min-height: 360px;
   flex-direction: column;
   align-items: center;
@@ -617,8 +623,11 @@ a { color: inherit; }
   .credit__role { white-space: normal; }
 
   /* Embedded PDF viewers are unreliable on mobile — show a tap-through panel */
-  .resume__pdf { display: none; }
-  .resume__fallback { display: flex; }
+  .resume__frame .resume__pdf { display: none; }
+  .resume__frame .resume__fallback,
+  .resume__frame.is-loaded .resume__fallback { display: flex; }
+  .js .resume__load { display: none; }
+  .js .resume__open { display: inline-flex; }
 }
 
 @media (max-width: 460px) {
